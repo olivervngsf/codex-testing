@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Lab Preview Studio</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <main class="app" id="app">
+      <section class="workspace">
+        <header class="hero">
+          <div>
+            <p class="eyebrow">✦ Color testing web app</p>
+            <h1>Preview complete page samples before committing to a color system.</h1>
+            <p class="lede">Switch between dashboard, CRM, and landing page examples, then tune typography, primary colors, accent colors, radius, and density from the right panel.</p>
+          </div>
+          <div class="hero-card">✨ Live look & feel preview</div>
+        </header>
+        <nav class="tabs" aria-label="Page samples" id="tabs"></nav>
+        <section class="preview-shell" id="preview"></section>
+      </section>
+      <aside class="control-panel" aria-label="Customization controls">
+        <div class="panel-heading"><span class="panel-icon">▦</span><div><h2>Customize</h2><p>Change color scheme and typography instantly.</p></div></div>
+        <section class="control-group"><h3>🎨 Color scheme</h3><div class="theme-grid" id="themeGrid"></div><label>Main color <input id="primaryColor" type="color" /></label><label>Accent color <input id="accentColor" type="color" /></label></section>
+        <section class="control-group"><h3>🔤 Typography</h3><select id="fontSelect"></select><label>Corner radius <input id="radiusRange" type="range" min="8" max="34" /></label><label>Layout density <input id="densityRange" type="range" min="0.85" max="1.2" step="0.05" /></label></section>
+        <section class="control-group"><h3>📊 Color system breakdown</h3><div class="token-list" id="tokenList"></div></section>
+      </aside>
+    </main>
+    <script src="src/app.js"></script>
+  </body>
+</html>
