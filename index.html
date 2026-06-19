@@ -2,8 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Godox V100C Flash Controller</title>
+    <meta name="description" content="Interactive controller for the Godox V100 / V100C round-head speedlite." />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#0b0d12" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="V100C" />
     <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
@@ -148,5 +157,12 @@
       </aside>
     </main>
     <script src="src/app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>

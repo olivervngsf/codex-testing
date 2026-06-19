@@ -12,10 +12,13 @@
   --font: "SF Pro Display", Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   font-family: var(--font);
   color: var(--ink);
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
   background:
     radial-gradient(1200px 600px at 75% -10%, rgba(255, 122, 24, .14), transparent 60%),
     radial-gradient(900px 500px at 0% 110%, rgba(255, 176, 32, .1), transparent 55%),
@@ -37,6 +40,7 @@ h1, h2, h3 { margin: 0; }
   grid-template-columns: minmax(0, 1fr) 380px;
   gap: 26px;
   padding: 30px;
+  padding: max(30px, env(safe-area-inset-top)) max(30px, env(safe-area-inset-right)) max(30px, env(safe-area-inset-bottom)) max(30px, env(safe-area-inset-left));
   max-width: 1320px;
   margin: 0 auto;
 }
