@@ -3,28 +3,148 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Color Lab Preview Studio</title>
+    <title>Godox V100C Flash Controller</title>
     <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
+    <div class="flash-burst" id="burst" aria-hidden="true"></div>
     <main class="app" id="app">
-      <section class="workspace">
+      <section class="stage">
         <header class="hero">
           <div>
-            <p class="eyebrow">✦ Color testing web app</p>
-            <h1>Preview complete page samples before committing to a color system.</h1>
-            <p class="lede">Switch between dashboard, CRM, and landing page examples, then tune typography, primary colors, accent colors, radius, and density from the right panel.</p>
+            <p class="eyebrow">⚡ Godox V100C control panel</p>
+            <h1>V100C Round-Head Speedlite</h1>
+            <p class="lede">A full controller for the Godox V100 (Canon mount). Set the flash mode, power, zoom, high-speed sync and the 2.4G wireless system, then fire a test flash — exactly like driving the unit from its rear panel.</p>
           </div>
-          <div class="hero-card">✨ Live look & feel preview</div>
+          <div class="battery" id="battery" title="Battery">
+            <span class="battery-cap"></span>
+            <span class="battery-fill" id="batteryFill"></span>
+            <b id="batteryLabel">100%</b>
+          </div>
         </header>
-        <nav class="tabs" aria-label="Page samples" id="tabs"></nav>
-        <section class="preview-shell" id="preview"></section>
+
+        <!-- The physical flash unit -->
+        <section class="unit" aria-label="Flash unit">
+          <div class="head">
+            <div class="tube" id="tube"></div>
+            <div class="modeling" id="modelingGlow"></div>
+            <span class="head-label">Magnetic round head · 28–105mm</span>
+          </div>
+
+          <!-- LCD screen -->
+          <div class="lcd" id="lcd">
+            <div class="lcd-top">
+              <span class="pill" id="lcdWireless">2.4G OFF</span>
+              <span class="pill" id="lcdHss">SYNC 1/250</span>
+              <span class="pill" id="lcdBeep">♪ ON</span>
+            </div>
+            <div class="lcd-main">
+              <div class="lcd-mode" id="lcdMode">M</div>
+              <div class="lcd-power">
+                <div class="lcd-frac" id="lcdPower">1/1</div>
+                <div class="lcd-sub" id="lcdSub">+0.0 EV</div>
+              </div>
+            </div>
+            <div class="lcd-bottom" id="lcdBottom"></div>
+          </div>
+
+          <!-- Control deck -->
+          <div class="deck">
+            <div class="rocker">
+              <button class="key key-up" data-action="inc" aria-label="Increase">▲</button>
+              <div class="rocker-mid">
+                <button class="key key-left" data-action="prev" aria-label="Previous field">◀</button>
+                <button class="key key-set" id="testBtn" data-action="test">TEST</button>
+                <button class="key key-right" data-action="next" aria-label="Next field">▶</button>
+              </div>
+              <button class="key key-down" data-action="dec" aria-label="Decrease">▼</button>
+            </div>
+            <div class="fn-keys">
+              <button class="fn" data-action="mode">MODE</button>
+              <button class="fn" data-action="wireless">📡 WL</button>
+              <button class="fn" data-action="zoom">ZOOM</button>
+              <button class="fn" data-action="hss">⚡ HSS</button>
+              <button class="fn" data-action="model">💡 LAMP</button>
+              <button class="fn" data-action="beep">♪ BEEP</button>
+            </div>
+          </div>
+        </section>
       </section>
-      <aside class="control-panel" aria-label="Customization controls">
-        <div class="panel-heading"><span class="panel-icon">▦</span><div><h2>Customize</h2><p>Change color scheme and typography instantly.</p></div></div>
-        <section class="control-group"><h3>🎨 Color scheme</h3><div class="theme-grid" id="themeGrid"></div><label>Main color <input id="primaryColor" type="color" /></label><label>Accent color <input id="accentColor" type="color" /></label></section>
-        <section class="control-group"><h3>🔤 Typography</h3><select id="fontSelect"></select><label>Corner radius <input id="radiusRange" type="range" min="8" max="34" /></label><label>Layout density <input id="densityRange" type="range" min="0.85" max="1.2" step="0.05" /></label></section>
-        <section class="control-group"><h3>📊 Color system breakdown</h3><div class="token-list" id="tokenList"></div></section>
+
+      <!-- Side panel: detailed settings -->
+      <aside class="panel" aria-label="Settings">
+        <div class="panel-heading">
+          <span class="panel-icon">⚙</span>
+          <div><h2>Settings</h2><p>Every parameter updates the unit live.</p></div>
+        </div>
+
+        <section class="group">
+          <h3>Flash mode</h3>
+          <div class="seg" id="modeSeg"></div>
+        </section>
+
+        <section class="group" id="powerGroup">
+          <h3>Power output</h3>
+          <label class="row">Level <output id="powerOut">1/1</output></label>
+          <input id="powerRange" type="range" min="0" max="90" step="1" />
+          <p class="hint" id="powerHint">Full power · GN 100 (ISO 100, 105mm)</p>
+        </section>
+
+        <section class="group" id="compGroup" hidden>
+          <h3>TTL exposure comp.</h3>
+          <label class="row">Compensation <output id="compOut">+0.0 EV</output></label>
+          <input id="compRange" type="range" min="-9" max="9" step="1" value="0" />
+        </section>
+
+        <section class="group" id="multiGroup" hidden>
+          <h3>Multi (stroboscopic)</h3>
+          <label class="row">Frequency <output id="freqOut">10 Hz</output></label>
+          <input id="freqRange" type="range" min="1" max="199" step="1" value="10" />
+          <label class="row">Flash count <output id="timesOut">10</output></label>
+          <input id="timesRange" type="range" min="1" max="100" step="1" value="10" />
+        </section>
+
+        <section class="group">
+          <h3>Zoom (head coverage)</h3>
+          <div class="zoom-row">
+            <button class="chip" id="zoomAuto" data-zoom="auto">AUTO</button>
+            <input id="zoomRange" type="range" min="0" max="9" step="1" />
+            <output id="zoomOut">105mm</output>
+          </div>
+        </section>
+
+        <section class="group">
+          <h3>High-speed sync &amp; curtain</h3>
+          <label class="switch-row"><span>HSS up to 1/8000s</span><button class="toggle" id="hssToggle" role="switch" aria-checked="false"></button></label>
+          <div class="seg small" id="curtainSeg"></div>
+        </section>
+
+        <section class="group">
+          <h3>2.4G wireless system</h3>
+          <div class="seg small" id="roleSeg"></div>
+          <div class="wl-grid">
+            <label class="row">Channel <output id="chanOut">1</output></label>
+            <input id="chanRange" type="range" min="1" max="32" step="1" value="1" />
+            <label class="row">Group <output id="groupOut">A</output></label>
+            <input id="groupRange" type="range" min="0" max="4" step="1" value="0" />
+            <label class="row">Wireless ID <output id="idOut">OFF</output></label>
+            <input id="idRange" type="range" min="0" max="99" step="1" value="0" />
+          </div>
+        </section>
+
+        <section class="group">
+          <h3>Modeling lamp</h3>
+          <label class="switch-row"><span>LED modeling light</span><button class="toggle" id="modelToggle" role="switch" aria-checked="false"></button></label>
+          <label class="row">Brightness <output id="modelOut">50%</output></label>
+          <input id="modelRange" type="range" min="1" max="100" step="1" value="50" />
+        </section>
+
+        <section class="group">
+          <h3>Recycling &amp; sound</h3>
+          <label class="switch-row"><span>Beep / ready tone</span><button class="toggle on" id="beepToggle" role="switch" aria-checked="true"></button></label>
+          <p class="hint" id="recycleHint">Recycle time at full power ≈ 1.5s</p>
+          <button class="fire" id="fireBtn">⚡ Fire test flash</button>
+        </section>
       </aside>
     </main>
     <script src="src/app.js"></script>
